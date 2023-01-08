@@ -1,0 +1,13 @@
+apply plugin: "org.sonarqube"
+apply plugin: 'org.owasp.dependencycheck'
+
+sonarqube {
+    properties {
+        property 'sonar.dependencyCheck.jsonReportPath', 'build/reports/dependency-check-report.json'
+        property 'sonar.dependencyCheck.htmlReportPath', 'build/reports/dependency-check-report.html'
+        property 'sonar.projectName', 'flink-sql-gateway-server'
+        property 'sonar.projectKey', 'flink-sql-gateway-server'
+
+        properties["sonar.sources"] += "build.gradle"
+    }
+}

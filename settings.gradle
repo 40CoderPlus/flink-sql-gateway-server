@@ -1,0 +1,4 @@
+rootProject.name = 'flink-sql-gateway-server'
+include 'sql-gateway-spring-boot'
+include 'sql-gateway-embedded-server'
+

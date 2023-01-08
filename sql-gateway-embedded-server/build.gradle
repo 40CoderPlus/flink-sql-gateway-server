@@ -1,0 +1,15 @@
+apply plugin: 'org.springframework.boot'
+
+dependencies {
+    implementation project(":sql-gateway-spring-boot")
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    runtimeOnly 'com.h2database:h2'
+
+    // test:springboot
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+    testImplementation('com.h2database:h2')
+}

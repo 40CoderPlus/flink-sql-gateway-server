@@ -1,0 +1,17 @@
+apply plugin: 'com.palantir.baseline-idea'
+
+allprojects {
+    apply plugin: 'com.palantir.baseline-idea'
+}
+
+subprojects {
+    apply plugin: 'com.palantir.baseline-format'
+    apply plugin: 'com.diffplug.spotless'
+
+    spotless {
+        java {
+            palantirJavaFormat()
+            formatAnnotations()
+        }
+    }
+}

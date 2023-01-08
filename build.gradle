@@ -1,0 +1,117 @@
+buildscript {
+    ext {
+        //@formatter:off
+        sbVersion      = '2.7.7'
+        junitVersion   = '5.9.0'
+        //@formatter:on
+    }
+
+    repositories {
+        gradlePluginPortal()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:$sbVersion"
+        classpath "io.spring.gradle:dependency-management-plugin:1.1.0"
+        classpath "com.palantir.baseline:gradle-baseline-java:4.185.0"
+        classpath "com.diffplug.spotless:spotless-plugin-gradle:6.12.1"
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.5.0.2730"
+        classpath 'org.owasp:dependency-check-gradle:7.4.4'
+    }
+}
+
+subprojects {
+    group 'com.fortycoderplus.flink.ext'
+    version "1.0.0"
+
+    apply plugin: 'java'
+    apply plugin: 'java-library'
+    apply plugin: 'maven-publish'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'idea'
+
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.boot:spring-boot-starter-parent:${sbVersion}"
+        }
+    }
+
+    dependencies {
+        // lombok
+        compileOnly "org.projectlombok:lombok:1.18.24"
+        annotationProcessor "org.projectlombok:lombok:1.18.24"
+        // mapstruct
+        implementation 'org.mapstruct:mapstruct:1.5.2.Final'
+        annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.2.Final'
+
+        // test:junit
+        testImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
+        testImplementation "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
+    }
+
+    plugins.withType(JavaPlugin) {
+        project.sourceCompatibility = JavaVersion.VERSION_11
+    }
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF-8"
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                groupId = 'com.fortycoderplus.flink.ext'
+                artifactId = project.name
+                version = project.version
+
+                from components.java
+
+                pom {
+                    name = "Flink Sql Gateway Extension :: $project.name"
+                    description = 'Flink Sql Gateway Extension :: $project.name'
+                    url = 'https://github.com/40coderplus/flink-sql-gateway-server'
+                    developers {
+                        developer {
+                            id = 'Codingendless'
+                            name = 'Codingendless'
+                            email = 'codingendless@40coderplus.com'
+                        }
+                    }
+                    scm {
+                        connection = 'scm:git:git@github.com:40coderplus/flink-sql-gateway-server.git'
+                        url = 'https://github.com/40coderplus/flink-sql-gateway-server'
+                    }
+                }
+            }
+        }
+        repositories {
+            maven {
+                credentials {
+                    username "$nexusUsername"
+                    password "$nexusPassword"
+                }
+                def releasesRepoUrl = "https://maven.40coderplus.com/repository/maven-releases/"
+                def snapshotsRepoUrl = "https://maven.40coderplus.com/repository/maven-snapshots/"
+                url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+                allowInsecureProtocol = true
+            }
+        }
+    }
+}
+
+apply from: 'baseline.gradle'
+apply from: 'sonar.gradle'
