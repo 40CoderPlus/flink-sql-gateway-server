@@ -1,8 +1,9 @@
 buildscript {
     ext {
         //@formatter:off
-        sbVersion      = '2.7.7'
-        junitVersion   = '5.9.0'
+        flinkVersion      = '1.16.0'
+        springbootVersion = '2.7.7'
+        junitVersion      = '5.9.0'
         //@formatter:on
     }
 
@@ -14,7 +15,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:$sbVersion"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:$springbootVersion"
         classpath "io.spring.gradle:dependency-management-plugin:1.1.0"
         classpath "com.palantir.baseline:gradle-baseline-java:4.185.0"
         classpath "com.diffplug.spotless:spotless-plugin-gradle:6.12.1"
@@ -43,7 +44,7 @@ subprojects {
 
     dependencyManagement {
         imports {
-            mavenBom "org.springframework.boot:spring-boot-starter-parent:${sbVersion}"
+            mavenBom "org.springframework.boot:spring-boot-starter-parent:${springbootVersion}"
         }
     }
 

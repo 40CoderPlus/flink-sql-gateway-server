@@ -20,13 +20,6 @@
 
 package com.fortycoderplus.flink.ext;
 
-import lombok.AllArgsConstructor;
-import org.apache.flink.table.gateway.SqlGateway;
+import org.springframework.context.ApplicationListener;
 
-@AllArgsConstructor
-public class SqlGatewayWatcher {
-
-    private SqlGatewayProperties sqlGatewayProperties;
-
-    public void watch(SqlGateway sqlGateway) {}
-}
+public interface SqlGatewayEventListener extends ApplicationListener<SqlGatewayEvent> {}

@@ -20,13 +20,18 @@
 
 package com.fortycoderplus.flink.ext;
 
-import lombok.AllArgsConstructor;
-import org.apache.flink.table.gateway.SqlGateway;
+import java.util.List;
+import java.util.UUID;
+import lombok.Builder;
+import lombok.Data;
+import lombok.ToString;
 
-@AllArgsConstructor
-public class SqlGatewayWatcher {
+@Data
+@Builder
+@ToString
+public class SqlGatewaySession {
 
-    private SqlGatewayProperties sqlGatewayProperties;
+    private UUID id;
 
-    public void watch(SqlGateway sqlGateway) {}
+    private List<SqlGatewayOperation> operations;
 }

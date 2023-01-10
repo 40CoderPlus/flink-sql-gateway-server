@@ -20,12 +20,50 @@
 
 package com.fortycoderplus.flink.ext.server;
 
+import com.fortycoderplus.flink.ext.SqlGatewayWatcher;
+import org.apache.flink.table.gateway.SqlGateway;
+import org.springframework.beans.BeansException;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.stereotype.Component;
 
 @SpringBootApplication
 public class FlinkSqlGatewayEmbeddedServer {
     public static void main(String[] args) {
         SpringApplication.run(FlinkSqlGatewayEmbeddedServer.class, args);
+    }
+
+    @Component
+    public static class FlinkSqlGatewayStartup implements CommandLineRunner, ApplicationContextAware {
+
+        private final SqlGateway sqlGateway;
+        private final SqlGatewayWatcher sqlGatewayWatcher;
+
+        private ApplicationContext ctx;
+
+        public FlinkSqlGatewayStartup(SqlGateway sqlGateway, SqlGatewayWatcher sqlGatewayWatcher) {
+            this.sqlGateway = sqlGateway;
+            this.sqlGatewayWatcher = sqlGatewayWatcher;
+        }
+
+        @Override
+        public void run(String... args) {
+            try {
+                sqlGateway.start();
+                sqlGatewayWatcher.watch(sqlGateway);
+            } catch (Throwable ex) {
+                ex.printStackTrace();
+                ((ConfigurableApplicationContext) ctx).close();
+            }
+        }
+
+        @Override
+        public void setApplicationContext(ApplicationContext ctx) throws BeansException {
+            this.ctx = ctx;
+        }
     }
 }

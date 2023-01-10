@@ -1,0 +1,5 @@
+sql-gateway:
+  watcher:
+    delay: 0
+    time-unit: milliseconds
+    period: 500

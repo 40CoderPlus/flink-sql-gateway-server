@@ -1,4 +1,11 @@
 dependencies {
     implementation "org.springframework.boot:spring-boot-autoconfigure"
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+
+    implementation "org.apache.flink:flink-sql-gateway-api:$flinkVersion"
+    implementation "org.apache.flink:flink-sql-gateway:$flinkVersion"
+
+    implementation 'org.jooq:joor:0.9.14'
+
+    runtimeOnly 'org.apache.logging.log4j:log4j-1.2-api:2.17.1'
 }

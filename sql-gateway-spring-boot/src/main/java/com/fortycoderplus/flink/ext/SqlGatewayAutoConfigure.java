@@ -19,9 +19,33 @@
  */
 package com.fortycoderplus.flink.ext;
 
+import org.apache.flink.table.gateway.SqlGateway;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @EnableConfigurationProperties(SqlGatewayProperties.class)
-public class SqlGatewayAutoConfigure {}
+public class SqlGatewayAutoConfigure {
+
+    @Bean
+    @ConditionalOnMissingBean
+    public SqlGateway sqlGateway(SqlGatewayProperties sqlGatewayProperties) {
+        return new SqlGateway(sqlGatewayProperties.dynamicConfig());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public SqlGatewayWatcher sqlGatewayWatcher(SqlGatewayProperties sqlGatewayProperties) {
+        return new SqlGatewayWatcher(sqlGatewayProperties);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public SqlGatewayEventListener sqlGatewayEventListener() {
+        return event -> LoggerFactory.getLogger("sql-gateway-logger")
+                .info("consume flink sql gateway change event:[{}]", event);
+    }
+}

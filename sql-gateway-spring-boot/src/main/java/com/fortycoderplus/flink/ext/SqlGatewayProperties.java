@@ -20,8 +20,13 @@
 
 package com.fortycoderplus.flink.ext;
 
+import static org.apache.flink.util.TimeUtils.formatWithHighestUnit;
+
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
+import java.util.Objects;
+import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -29,9 +34,13 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "sql-gateway")
 public class SqlGatewayProperties {
 
+    // for Flink SQL Gateway
     private Session session = new Session();
     private Worker worker = new Worker();
     private Endpoint endpoint = new Endpoint();
+
+    // for Flink SQL Gateway watcher
+    private Watcher watcher = new Watcher();
 
     @Data
     public static class Session {
@@ -67,5 +76,54 @@ public class SqlGatewayProperties {
         private String bindAddress;
         private int port = 8083;
         private String bindPort = "8083";
+    }
+
+    @Data
+    public static class Watcher {
+
+        private int delay = 0;
+        private int period = 10;
+        private TimeUnit timeUnit = TimeUnit.SECONDS;
+    }
+
+    public Properties dynamicConfig() {
+        Properties dynamicConfig = new Properties();
+        // rest
+        dynamicConfig.setProperty(
+                "sql-gateway.endpoint.rest.address",
+                this.getEndpoint().getRest().getAddress());
+        dynamicConfig.setProperty(
+                "sql-gateway.endpoint.rest.port",
+                String.valueOf(this.getEndpoint().getRest().getPort()));
+        dynamicConfig.setProperty(
+                "sql-gateway.endpoint.rest.bind-port",
+                this.getEndpoint().getRest().getBindPort());
+        if (Objects.nonNull(this.getEndpoint().getRest().getBindAddress())) {
+            dynamicConfig.setProperty(
+                    "sql-gateway.endpoint.rest.bind-address",
+                    this.getEndpoint().getRest().getBindAddress());
+        }
+
+        // session
+        dynamicConfig.setProperty(
+                "sql-gateway.session.check-interval",
+                formatWithHighestUnit(this.getSession().getCheckInterval()));
+        dynamicConfig.setProperty(
+                "sql-gateway.session.idle-timeout",
+                formatWithHighestUnit(this.getSession().getIdleTimeout()));
+        dynamicConfig.setProperty(
+                "sql-gateway.session.max-num", String.valueOf(this.getSession().getMaxNum()));
+
+        // worker
+        dynamicConfig.setProperty(
+                "sql-gateway.worker.keepalive-time",
+                formatWithHighestUnit(this.getWorker().getKeepaliveTime()));
+        dynamicConfig.setProperty(
+                "sql-gateway.worker.threads.max",
+                String.valueOf(this.getWorker().getThreads().getMax()));
+        dynamicConfig.setProperty(
+                "sql-gateway.worker.threads.min",
+                String.valueOf(this.getWorker().getThreads().getMin()));
+        return dynamicConfig;
     }
 }

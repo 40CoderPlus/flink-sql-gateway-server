@@ -20,13 +20,17 @@
 
 package com.fortycoderplus.flink.ext;
 
-import lombok.AllArgsConstructor;
-import org.apache.flink.table.gateway.SqlGateway;
+import java.util.List;
+import lombok.Getter;
+import org.springframework.context.ApplicationEvent;
 
-@AllArgsConstructor
-public class SqlGatewayWatcher {
+@Getter
+public class SqlGatewayEvent extends ApplicationEvent {
 
-    private SqlGatewayProperties sqlGatewayProperties;
+    private final List<SqlGatewaySession> changed;
 
-    public void watch(SqlGateway sqlGateway) {}
+    public SqlGatewayEvent(List<SqlGatewaySession> changed, Object source) {
+        super(source);
+        this.changed = changed;
+    }
 }
