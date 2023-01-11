@@ -21,15 +21,16 @@
 package com.fortycoderplus.flink.ext;
 
 import java.util.List;
+import java.util.Map;
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 
 @Getter
 public class SqlGatewayEvent extends ApplicationEvent {
 
-    private final List<SqlGatewaySession> changed;
+    private final Map<SqlGatewaySession, List<SqlGatewayOperation>> changed;
 
-    public SqlGatewayEvent(List<SqlGatewaySession> changed, Object source) {
+    public SqlGatewayEvent(Map<SqlGatewaySession, List<SqlGatewayOperation>> changed, Object source) {
         super(source);
         this.changed = changed;
     }

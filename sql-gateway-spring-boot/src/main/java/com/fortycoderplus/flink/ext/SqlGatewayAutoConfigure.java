@@ -23,6 +23,7 @@ import org.apache.flink.table.gateway.SqlGateway;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -38,8 +39,9 @@ public class SqlGatewayAutoConfigure {
 
     @Bean
     @ConditionalOnMissingBean
-    public SqlGatewayWatcher sqlGatewayWatcher(SqlGatewayProperties sqlGatewayProperties) {
-        return new SqlGatewayWatcher(sqlGatewayProperties);
+    public SqlGatewayWatcher sqlGatewayWatcher(
+            SqlGatewayProperties sqlGatewayProperties, ApplicationEventPublisher publisher) {
+        return new SqlGatewayWatcher(sqlGatewayProperties, publisher);
     }
 
     @Bean

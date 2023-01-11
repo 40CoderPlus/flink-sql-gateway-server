@@ -20,18 +20,18 @@
 
 package com.fortycoderplus.flink.ext;
 
-import java.util.List;
 import java.util.UUID;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 @Data
 @Builder
 @ToString
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class SqlGatewaySession {
 
+    @EqualsAndHashCode.Include
     private UUID id;
-
-    private List<SqlGatewayOperation> operations;
 }
