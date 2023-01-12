@@ -20,7 +20,7 @@
 
 package com.fortycoderplus.flink.ext.server;
 
-import com.fortycoderplus.flink.ext.SqlGatewayWatcher;
+import com.fortycoderplus.flink.ext.SqlGatewayMonitor;
 import org.apache.flink.table.gateway.SqlGateway;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.CommandLineRunner;
@@ -41,20 +41,20 @@ public class FlinkSqlGatewayEmbeddedServer {
     public static class FlinkSqlGatewayStartup implements CommandLineRunner, ApplicationContextAware {
 
         private final SqlGateway sqlGateway;
-        private final SqlGatewayWatcher sqlGatewayWatcher;
+        private final SqlGatewayMonitor sqlGatewayMonitor;
 
         private ApplicationContext ctx;
 
-        public FlinkSqlGatewayStartup(SqlGateway sqlGateway, SqlGatewayWatcher sqlGatewayWatcher) {
+        public FlinkSqlGatewayStartup(SqlGateway sqlGateway, SqlGatewayMonitor sqlGatewayMonitor) {
             this.sqlGateway = sqlGateway;
-            this.sqlGatewayWatcher = sqlGatewayWatcher;
+            this.sqlGatewayMonitor = sqlGatewayMonitor;
         }
 
         @Override
         public void run(String... args) {
             try {
                 sqlGateway.start();
-                sqlGatewayWatcher.watch(sqlGateway);
+                sqlGatewayMonitor.monitor(sqlGateway);
             } catch (Throwable ex) {
                 ex.printStackTrace();
                 ((ConfigurableApplicationContext) ctx).close();

@@ -39,8 +39,8 @@ public class SqlGatewayProperties {
     private Worker worker = new Worker();
     private Endpoint endpoint = new Endpoint();
 
-    // for Flink SQL Gateway watcher
-    private Watcher watcher = new Watcher();
+    // for Flink SQL Gateway Monitor
+    private Monitor monitor = new Monitor();
 
     @Data
     public static class Session {
@@ -79,7 +79,7 @@ public class SqlGatewayProperties {
     }
 
     @Data
-    public static class Watcher {
+    public static class Monitor {
 
         private int delay = 0;
         private int period = 10;

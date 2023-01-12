@@ -33,7 +33,7 @@ import org.apache.flink.table.gateway.service.session.Session;
 import org.joor.Reflect;
 import org.springframework.context.ApplicationEventPublisher;
 
-public class SqlGatewayWatcher {
+public class SqlGatewayMonitor {
 
     private static final String FILED_SESSION_MANAGER = "sessionManager";
     private static final String FILED_SESSIONS = "sessions";
@@ -43,12 +43,12 @@ public class SqlGatewayWatcher {
     private final ApplicationEventPublisher publisher;
     private Map<SqlGatewaySession, List<SqlGatewayOperation>> before = new HashMap<>();
 
-    public SqlGatewayWatcher(SqlGatewayProperties sqlGatewayProperties, ApplicationEventPublisher publisher) {
+    public SqlGatewayMonitor(SqlGatewayProperties sqlGatewayProperties, ApplicationEventPublisher publisher) {
         this.sqlGatewayProperties = sqlGatewayProperties;
         this.publisher = publisher;
     }
 
-    public void watch(SqlGateway sqlGateway) {
+    public void monitor(SqlGateway sqlGateway) {
         Executors.newScheduledThreadPool(1)
                 .scheduleAtFixedRate(
                         () -> {
@@ -58,9 +58,9 @@ public class SqlGatewayWatcher {
                             publisher.publishEvent(
                                     new SqlGatewayEvent(computeChanges(collectOperations(sessions)), this));
                         },
-                        sqlGatewayProperties.getWatcher().getDelay(),
-                        sqlGatewayProperties.getWatcher().getPeriod(),
-                        sqlGatewayProperties.getWatcher().getTimeUnit());
+                        sqlGatewayProperties.getMonitor().getDelay(),
+                        sqlGatewayProperties.getMonitor().getPeriod(),
+                        sqlGatewayProperties.getMonitor().getTimeUnit());
     }
 
     private Map<SqlGatewaySession, List<SqlGatewayOperation>> collectOperations(Map<SessionHandle, Session> sessions) {

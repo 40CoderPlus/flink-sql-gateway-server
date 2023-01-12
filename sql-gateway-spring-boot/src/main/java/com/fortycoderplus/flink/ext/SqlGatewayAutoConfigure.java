@@ -39,9 +39,9 @@ public class SqlGatewayAutoConfigure {
 
     @Bean
     @ConditionalOnMissingBean
-    public SqlGatewayWatcher sqlGatewayWatcher(
+    public SqlGatewayMonitor sqlGatewayMonitor(
             SqlGatewayProperties sqlGatewayProperties, ApplicationEventPublisher publisher) {
-        return new SqlGatewayWatcher(sqlGatewayProperties, publisher);
+        return new SqlGatewayMonitor(sqlGatewayProperties, publisher);
     }
 
     @Bean
