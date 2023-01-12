@@ -18,9 +18,9 @@
  * limitations under the License.
  */
 
-package com.fortycoderplus.flink.ext.server;
+package com.fortycoderplus.flink.ext.sqlgateway.server.embedded;
 
-import com.fortycoderplus.flink.ext.SqlGatewayMonitor;
+import com.fortycoderplus.flink.ext.sqlgateway.server.SqlGatewayMonitor;
 import org.apache.flink.table.gateway.SqlGateway;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.CommandLineRunner;

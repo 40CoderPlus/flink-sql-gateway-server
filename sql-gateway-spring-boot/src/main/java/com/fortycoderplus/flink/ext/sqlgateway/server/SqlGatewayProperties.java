@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2017-2022 40CoderPlus. All rights reserved.
+ * (c) Copyright 2023 40CoderPlus. All rights reserved.
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-package com.fortycoderplus.flink.ext;
+package com.fortycoderplus.flink.ext.sqlgateway.server;
 
 import static org.apache.flink.util.TimeUtils.formatWithHighestUnit;
 

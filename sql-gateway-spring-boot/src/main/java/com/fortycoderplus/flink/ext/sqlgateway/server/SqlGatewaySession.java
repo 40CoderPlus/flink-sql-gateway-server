@@ -18,20 +18,20 @@
  * limitations under the License.
  */
 
-package com.fortycoderplus.flink.ext;
+package com.fortycoderplus.flink.ext.sqlgateway.server;
 
-import java.util.List;
-import java.util.Map;
-import lombok.Getter;
-import org.springframework.context.ApplicationEvent;
+import java.util.UUID;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
-@Getter
-public class SqlGatewayEvent extends ApplicationEvent {
+@Data
+@Builder
+@ToString
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+public class SqlGatewaySession {
 
-    private final Map<SqlGatewaySession, List<SqlGatewayOperation>> changed;
-
-    public SqlGatewayEvent(Map<SqlGatewaySession, List<SqlGatewayOperation>> changed, Object source) {
-        super(source);
-        this.changed = changed;
-    }
+    @EqualsAndHashCode.Include
+    private UUID id;
 }

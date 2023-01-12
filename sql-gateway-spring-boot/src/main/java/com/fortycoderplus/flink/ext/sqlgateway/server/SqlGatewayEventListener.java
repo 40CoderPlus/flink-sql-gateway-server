@@ -18,20 +18,8 @@
  * limitations under the License.
  */
 
-package com.fortycoderplus.flink.ext;
+package com.fortycoderplus.flink.ext.sqlgateway.server;
 
-import java.util.UUID;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import org.springframework.context.ApplicationListener;
 
-@Data
-@Builder
-@ToString
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class SqlGatewaySession {
-
-    @EqualsAndHashCode.Include
-    private UUID id;
-}
+public interface SqlGatewayEventListener extends ApplicationListener<SqlGatewayEvent> {}

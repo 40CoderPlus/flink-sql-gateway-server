@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-package com.fortycoderplus.flink.ext;
+package com.fortycoderplus.flink.ext.sqlgateway.server;
 
 import java.util.HashMap;
 import java.util.List;
