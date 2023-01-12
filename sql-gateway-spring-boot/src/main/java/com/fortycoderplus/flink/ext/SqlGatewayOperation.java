@@ -35,6 +35,7 @@ public class SqlGatewayOperation {
     @EqualsAndHashCode.Include
     private UUID id;
 
+    @EqualsAndHashCode.Include
     private String status;
     private String error;
 }
