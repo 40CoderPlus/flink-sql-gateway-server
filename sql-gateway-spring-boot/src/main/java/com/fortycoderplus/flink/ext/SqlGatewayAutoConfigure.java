@@ -47,7 +47,11 @@ public class SqlGatewayAutoConfigure {
     @Bean
     @ConditionalOnMissingBean
     public SqlGatewayEventListener sqlGatewayEventListener() {
-        return event -> LoggerFactory.getLogger("sql-gateway-logger")
-                .info("consume flink sql gateway change event:[{}]", event);
+        return event -> {
+            if (!event.getChanged().isEmpty()) {
+                LoggerFactory.getLogger("sql-gateway-logger")
+                        .info("consume flink sql gateway change event:[{}]", event.getChanged());
+            }
+        };
     }
 }
