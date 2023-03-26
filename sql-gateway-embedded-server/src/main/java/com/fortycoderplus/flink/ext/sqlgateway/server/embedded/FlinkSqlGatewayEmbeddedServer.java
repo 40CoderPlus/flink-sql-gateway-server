@@ -21,6 +21,7 @@
 package com.fortycoderplus.flink.ext.sqlgateway.server.embedded;
 
 import com.fortycoderplus.flink.ext.sqlgateway.server.SqlGatewayMonitor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.flink.table.gateway.SqlGateway;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.CommandLineRunner;
@@ -31,6 +32,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @SpringBootApplication
 public class FlinkSqlGatewayEmbeddedServer {
     public static void main(String[] args) {
@@ -55,6 +57,7 @@ public class FlinkSqlGatewayEmbeddedServer {
             try {
                 sqlGateway.start();
                 sqlGatewayMonitor.monitor(sqlGateway);
+                logger.info("start Flink SQL Gateway embedded server.");
             } catch (Throwable ex) {
                 ex.printStackTrace();
                 ((ConfigurableApplicationContext) ctx).close();

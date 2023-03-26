@@ -37,5 +37,6 @@ public class SqlGatewayOperation {
 
     @EqualsAndHashCode.Include
     private String status;
+
     private String error;
 }

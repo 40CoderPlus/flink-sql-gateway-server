@@ -25,22 +25,15 @@ dependencies {
     implementation "org.apache.flink:flink-json:$flinkVersion"
     implementation "org.apache.flink:flink-csv:$flinkVersion"
 
-    implementation "org.apache.flink:flink-s3-fs-hadoop:${flinkVersion}"
-    implementation "org.apache.flink:flink-hadoop-fs:$flinkVersion"
     implementation "org.apache.flink:flink-table-common:$flinkVersion"
     implementation "org.apache.flink:flink-table-runtime:$flinkVersion"
     implementation "org.apache.flink:flink-table-api-java-bridge:$flinkVersion"
-    implementation "org.apache.flink:flink-table-api-scala-bridge_2.12:${flinkVersion}"
     implementation "org.apache.flink:flink-table-planner_2.12:${flinkVersion}"
-    implementation "org.apache.flink:flink-table-common:${flinkVersion}"
+
+    implementation "org.apache.flink:flink-s3-fs-hadoop:${flinkVersion}"
+    implementation "org.apache.flink:flink-hadoop-fs:$flinkVersion"
 
     implementation "org.apache.flink:flink-connector-base:$flinkVersion"
-    implementation("org.apache.flink:flink-connector-hive_2.12:${flinkVersion}") {
-        exclude group: 'org.apache.hadoop', module: 'hadoop-mapreduce-client-core'
-    }
-    implementation "org.apache.flink:flink-connector-kafka:${flinkVersion}"
-    implementation "org.apache.flink:flink-connector-jdbc:${flinkVersion}"
-    implementation "org.apache.flink:flink-sql-connector-kafka:${flinkVersion}"
 
     implementation "org.apache.flink:flink-sql-gateway-api:$flinkVersion"
     implementation "org.apache.flink:flink-sql-gateway:$flinkVersion"

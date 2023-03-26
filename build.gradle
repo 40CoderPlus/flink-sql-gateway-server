@@ -1,7 +1,7 @@
 buildscript {
     ext {
         //@formatter:off
-        flinkVersion      = '1.16.0'
+        flinkVersion      = '1.17.0'
         springbootVersion = '2.7.7'
         junitVersion      = '5.9.0'
         //@formatter:on
@@ -39,6 +39,7 @@ subprojects {
 
     repositories {
         mavenLocal()
+        maven { url 'https://maven.aliyun.com/repository/public/' }
         mavenCentral()
     }
 

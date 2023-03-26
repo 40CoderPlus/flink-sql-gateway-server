@@ -19,7 +19,11 @@
  */
 package com.fortycoderplus.flink.ext.sqlgateway.server;
 
+import java.util.List;
+import org.apache.flink.configuration.ConfigurationUtils;
 import org.apache.flink.table.gateway.SqlGateway;
+import org.apache.flink.table.gateway.service.context.DefaultContext;
+import org.apache.flink.table.gateway.service.session.SessionManager;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -34,7 +38,9 @@ public class SqlGatewayAutoConfigure {
     @Bean
     @ConditionalOnMissingBean
     public SqlGateway sqlGateway(SqlGatewayProperties sqlGatewayProperties) {
-        return new SqlGateway(sqlGatewayProperties.dynamicConfig());
+        DefaultContext context = DefaultContext.load(
+                ConfigurationUtils.createConfiguration(sqlGatewayProperties.dynamicConfig()), List.of(), true, false);
+        return new SqlGateway(context.getFlinkConfig(), SessionManager.create(context));
     }
 
     @Bean
