@@ -2,7 +2,7 @@ buildscript {
     ext {
         //@formatter:off
         flinkVersion      = '1.17.0'
-        springbootVersion = '2.7.7'
+        springbootVersion = '2.7.10'
         junitVersion      = '5.9.0'
         //@formatter:on
     }
@@ -109,7 +109,7 @@ subprojects {
                 def releasesRepoUrl = "https://maven.40coderplus.com/repository/maven-releases/"
                 def snapshotsRepoUrl = "https://maven.40coderplus.com/repository/maven-snapshots/"
                 url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
-                allowInsecureProtocol = true
+                allowInsecureProtocol = !url.toString().startsWith("https://")
             }
         }
     }
