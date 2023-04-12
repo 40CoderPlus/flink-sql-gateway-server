@@ -39,4 +39,6 @@ public class SqlGatewayOperation {
     private String status;
 
     private String error;
+
+    private String jid;
 }

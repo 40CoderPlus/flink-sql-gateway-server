@@ -22,10 +22,12 @@ package com.fortycoderplus.flink.ext.sqlgateway.server;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import org.apache.flink.table.gateway.SqlGateway;
 import org.apache.flink.table.gateway.api.operation.OperationHandle;
+import org.apache.flink.table.gateway.api.results.ResultSet;
 import org.apache.flink.table.gateway.api.session.SessionHandle;
 import org.apache.flink.table.gateway.service.operation.OperationManager;
 import org.apache.flink.table.gateway.service.session.Session;
@@ -84,6 +86,12 @@ public class SqlGatewayMonitor {
                                                         .getStatus()
                                                         .name())
                                                 .build();
+                                        try {
+                                            ResultSet resultSet = op.getValue().fetchResults(0, Integer.MAX_VALUE);
+                                            Optional.ofNullable(resultSet.getJobID())
+                                                    .ifPresent(jobID -> sgo.setJid(jobID.toString()));
+                                        } catch (Exception ignore) {
+                                        }
                                         op.getValue()
                                                 .getOperationInfo()
                                                 .getException()
