@@ -30,6 +30,7 @@ import org.apache.flink.table.gateway.api.operation.OperationHandle;
 import org.apache.flink.table.gateway.api.session.SessionHandle;
 import org.apache.flink.table.gateway.service.operation.OperationManager;
 import org.apache.flink.table.gateway.service.session.Session;
+import org.apache.flink.table.gateway.service.session.SessionManagerImpl;
 import org.joor.Reflect;
 import org.springframework.context.ApplicationEventPublisher;
 
@@ -52,9 +53,10 @@ public class SqlGatewayMonitor {
         Executors.newScheduledThreadPool(1)
                 .scheduleAtFixedRate(
                         () -> {
-                            Map<SessionHandle, Session> sessions = Reflect.on(sqlGateway)
-                                    .field(FILED_SESSION_MANAGER)
-                                    .get(FILED_SESSIONS);
+                            SessionManagerImpl sessionManager =
+                                    Reflect.on(sqlGateway).get(FILED_SESSION_MANAGER);
+                            Map<SessionHandle, Session> sessions =
+                                    Reflect.on(sessionManager).get(FILED_SESSIONS);
                             publisher.publishEvent(
                                     new SqlGatewayEvent(computeChanges(collectOperations(sessions)), this));
                         },
