@@ -20,7 +20,6 @@
 
 package com.fortycoderplus.flink.ext.sqlgateway.server;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
@@ -42,11 +41,12 @@ public class SqlGatewayMonitor {
 
     private final SqlGatewayProperties sqlGatewayProperties;
     private final ApplicationEventPublisher publisher;
-    private Map<SqlGatewaySession, List<SqlGatewayOperation>> before = new HashMap<>();
+    private final SqlGatewayChangeComputer changeComputer;
 
     public SqlGatewayMonitor(SqlGatewayProperties sqlGatewayProperties, ApplicationEventPublisher publisher) {
         this.sqlGatewayProperties = sqlGatewayProperties;
         this.publisher = publisher;
+        this.changeComputer = new SqlGatewayChangeComputer();
     }
 
     public void monitor(SqlGateway sqlGateway) {
@@ -58,7 +58,7 @@ public class SqlGatewayMonitor {
                             Map<SessionHandle, Session> sessions =
                                     Reflect.on(sessionManager).get(FILED_SESSIONS);
                             publisher.publishEvent(
-                                    new SqlGatewayEvent(computeChanges(collectOperations(sessions)), this));
+                                    new SqlGatewayEvent(changeComputer.compute(collectOperations(sessions)), this));
                         },
                         sqlGatewayProperties.getMonitor().getDelay(),
                         sqlGatewayProperties.getMonitor().getPeriod(),
@@ -93,31 +93,5 @@ public class SqlGatewayMonitor {
                                     })
                                     .collect(Collectors.toList());
                         }));
-    }
-
-    private Map<SqlGatewaySession, List<SqlGatewayOperation>> computeChanges(
-            Map<SqlGatewaySession, List<SqlGatewayOperation>> current) {
-        if (before.isEmpty()) {
-            before = current;
-            return before;
-        }
-
-        // first: add new sessions
-        Map<SqlGatewaySession, List<SqlGatewayOperation>> changed = current.entrySet().stream()
-                .filter(entry -> !before.containsKey(entry.getKey()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-
-        // second: add new operations
-        Map<SqlGatewaySession, List<SqlGatewayOperation>> candidate = current.entrySet().stream()
-                .filter(entry -> before.containsKey(entry.getKey()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-
-        changed.putAll(candidate.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, entry -> {
-            entry.getValue().removeAll(before.get(entry.getKey()));
-            return entry.getValue();
-        })));
-
-        before = current;
-        return changed;
     }
 }
