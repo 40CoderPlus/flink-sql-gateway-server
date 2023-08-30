@@ -35,6 +35,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @SpringBootApplication
 public class FlinkSqlGatewayEmbeddedServer {
+
     public static void main(String[] args) {
         SpringApplication.run(FlinkSqlGatewayEmbeddedServer.class, args);
     }
@@ -59,7 +60,7 @@ public class FlinkSqlGatewayEmbeddedServer {
                 sqlGatewayMonitor.monitor(sqlGateway);
                 logger.info("start Flink SQL Gateway embedded server.");
             } catch (Throwable ex) {
-                ex.printStackTrace();
+                logger.error("start Flink SQL Gateway embedded server failed:", ex);
                 ((ConfigurableApplicationContext) ctx).close();
             }
         }
