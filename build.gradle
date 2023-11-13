@@ -1,7 +1,7 @@
 buildscript {
     ext {
         //@formatter:off
-        flinkVersion      = '1.17.0'
+        flinkVersion      = '1.18.0'
         springbootVersion = '2.7.10'
         junitVersion      = '5.9.0'
         //@formatter:on
