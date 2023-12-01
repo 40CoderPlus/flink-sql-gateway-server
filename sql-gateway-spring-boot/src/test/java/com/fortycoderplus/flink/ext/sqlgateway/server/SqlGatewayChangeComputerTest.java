@@ -97,8 +97,8 @@ class SqlGatewayChangeComputerTest {
         assertEquals(1, thirdChanges.get(session1).size());
         assertTrue(computer.compute(third).isEmpty());
 
-        Map<SqlGatewaySession, List<SqlGatewayOperation>> fouth = new HashMap<>();
-        fouth.put(session1, new ArrayList<>() {
+        Map<SqlGatewaySession, List<SqlGatewayOperation>> forth = new HashMap<>();
+        forth.put(session1, new ArrayList<>() {
             {
                 add(SqlGatewayOperation.builder()
                         .id(id3)
@@ -111,10 +111,10 @@ class SqlGatewayChangeComputerTest {
             }
         });
 
-        Map<SqlGatewaySession, List<SqlGatewayOperation>> fouthChanges = computer.compute(fouth);
-        assertEquals(1, fouthChanges.size());
-        assertEquals(2, fouthChanges.get(session1).size());
-        assertTrue(computer.compute(fouth).isEmpty());
+        Map<SqlGatewaySession, List<SqlGatewayOperation>> forthChanges = computer.compute(forth);
+        assertEquals(1, forthChanges.size());
+        assertEquals(2, forthChanges.get(session1).size());
+        assertTrue(computer.compute(forth).isEmpty());
 
         assertTrue(computer.compute(new HashMap<>()).isEmpty());
     }
